@@ -1,5 +1,6 @@
 #pragma  once
 
+#include <vector>
 #include <set>
 
 #include "ExceptionMaker.hpp"
@@ -15,18 +16,20 @@ class Span
 		Span(unsigned int);
 
 		void				addNumber(int const&);
-		unsigned int		shortestSpan()			const;
-		unsigned int		longestSpan()			const;
+		void				addIntVector(std::vector<int> const&);
+		unsigned int		shortestSpan()	const;
+		unsigned int		longestSpan()	const;
 		unsigned int const&	getMaxSize()	const;
 
 	private:
 		std::multiset<int>	_numbers;
+		unsigned int		_shortest_span;
 		unsigned int		_max_size;
 
-		class SpanIsFullException : public ExceptionMaker
+		class NotEnoughSpaceException : public ExceptionMaker
 		{
 			public:
-				SpanIsFullException();
+				NotEnoughSpaceException();
 		};
 		class CantGetSpanException : public ExceptionMaker
 		{

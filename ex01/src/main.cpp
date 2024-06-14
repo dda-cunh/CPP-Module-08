@@ -1,4 +1,9 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <vector>
+
+#include "../inc/Span.hpp"
 
 #define CLI_GREEN		"\033[32m"
 #define CLI_RESET		"\033[0m"
@@ -45,5 +50,60 @@ void	testHeader(std::ostream &o, std::string name)
 
 int main(void)
 {
+	int const rand_range = 2000001;
 
+	std::srand(std::time(NULL));
+	TRY_CATCH_TEST("Adding array with 15000 random ints",
+		{
+			std::vector<int>	vec;
+			Span sp = Span(15000);
+
+			for (int i = 0; i < 15000; i++)
+				vec.push_back((std::rand() % rand_range) - rand_range / 2);
+			sp.addIntVector(vec);
+			std::cout << sp.shortestSpan() << std::endl;
+			std::cout << sp.longestSpan() << std::endl;
+		});
+	TRY_CATCH_TEST("Adding array with 50000 random ints",
+			{
+				std::vector<int>	vec;
+				Span sp = Span(50000);
+
+				for (int i = 0; i < 50000; i++)
+					vec.push_back((std::rand() % rand_range) - rand_range / 2);
+				sp.addIntVector(vec);
+				std::cout << sp.shortestSpan() << std::endl;
+				std::cout << sp.longestSpan() << std::endl;
+			});
+	TRY_CATCH_TEST("Sequential set [0,1024[",
+		{
+			int const	size = 1024;
+			Span sp = Span(size);
+
+			for (int i = 0; i < size; i++)
+				sp.addNumber(i);
+			std::cout << sp.shortestSpan() << std::endl;
+			std::cout << sp.longestSpan() << std::endl;
+		});
+	TRY_CATCH_TEST("Simple case",
+		{
+			Span sp = Span(7);
+			sp.addNumber(2);
+			sp.addNumber(22);
+			sp.addNumber(42);
+			sp.addNumber(62);
+			sp.addNumber(82);
+			sp.addNumber(102);
+			sp.addNumber(121);
+			std::cout << sp.shortestSpan() << std::endl;
+			std::cout << sp.longestSpan() << std::endl;
+		});
+	TRY_CATCH_TEST("Empty Span",
+		{
+			Span sp;
+
+			std::cout << sp.shortestSpan() << std::endl;
+			std::cout << sp.longestSpan() << std::endl;
+		});
+	return 0;
 }
