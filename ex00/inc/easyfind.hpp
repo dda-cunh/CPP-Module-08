@@ -31,4 +31,3 @@ int	const&easyfind(T<int, Allocator> const& container, int const& to_find)
 		return (*it);
 	throw(std::exception());
 }
-
