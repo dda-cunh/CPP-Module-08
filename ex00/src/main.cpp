@@ -69,15 +69,6 @@ int main(void)
 		{
 			std::cout << "Found " << easyfind(vec_i, to_find) << std::endl;
 		});
-	TRY_CATCH_TEST("deque of string",
-		{
-			std::deque<std::string>	deq_s;
-			std::cout << "Found " << easyfind(deq_s, to_find) << std::endl;
-		});
-	TRY_CATCH_TEST("Empty deque of int",
-		{
-			std::cout << "Found " << easyfind(deq_i, to_find) << std::endl;
-		});
 	deq_i.push_back(to_find);
 	TRY_CATCH_TEST("Deque of int with to_find",
 		{

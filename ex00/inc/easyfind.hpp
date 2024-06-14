@@ -3,18 +3,8 @@
 #include <algorithm>
 #include <iostream>
 
-template
-<
-	typename TT,
-	typename Allocator,
-	template
-	<
-		typename,
-		typename
-	>
-	class T
->
-TT	const&easyfind(T<TT, Allocator> const& container, int const& to_find)
+template <typename T>
+int	const&easyfind(T const& container, int const& to_find)
 {
 	(void) container;
 	(void) to_find;
