@@ -20,6 +20,8 @@ Span::Span(Span const & src)
 Span & Span::operator=(Span const & rhs)
 {
 	this->_max_size = rhs.getMaxSize();
+	this->_is_sorted = rhs._is_sorted;
+	this->addIntVector(rhs._numbers);
 	return (*this);
 }
 
@@ -36,31 +38,9 @@ Span::Span(unsigned int N)
 //-------------------------------------------------------------------------//
 
 //---------------------------  MEMBER FUNCTIONS  --------------------------//
-void	Span::addNumber(int const& i)
+unsigned int	const&Span::getMaxSize()	const
 {
-	if(this->_numbers.size() + 1 > this->getMaxSize())
-		throw (Span::NotEnoughSpaceException());
-	this->_numbers.push_back(i);
-	this->_is_sorted = false;
-}
-
-void	Span::addIntVector(std::vector<int> const& arr)
-{
-	if(this->_numbers.size() + arr.size() > this->getMaxSize())
-		throw (Span::NotEnoughSpaceException());
-	std::copy(arr.begin(), arr.end(),
-				std::insert_iterator<std::vector<int> >(this->_numbers,
-				this->_numbers.begin()));
-	this->_is_sorted = false;
-}
-
-void	Span::sort()
-{
-	if (!this->_is_sorted)
-	{
-		std::sort(this->_numbers.begin(), this->_numbers.end());
-		this->_is_sorted = true;
-	}
+	return (this->_max_size);
 }
 
 unsigned int	Span::shortestSpan()
@@ -72,7 +52,7 @@ unsigned int	Span::shortestSpan()
 		throw (CantGetSpanException());
 	min_span = (unsigned int)std::numeric_limits<int>::max() + 1;
 	this->sort();
-	for (unsigned long i = 1; i < this->_numbers.size(); i++)
+	for (std::vector<int>::size_type i = 1; i < this->_numbers.size(); i++)
 	{
 		curr_span = std::abs(this->_numbers[i] - this->_numbers[i - 1]);
 		if (curr_span < min_span)
@@ -94,9 +74,29 @@ unsigned int	Span::longestSpan()
 	return (upper - lower);
 }
 
-unsigned int	const&Span::getMaxSize()	const
+void	Span::addIntVector(std::vector<int> const& arr)
 {
-	return (this->_max_size);
+	if(this->_numbers.size() + arr.size() > this->getMaxSize())
+		throw (Span::NotEnoughSpaceException());
+	this->_numbers.insert(this->_numbers.end(), arr.begin(), arr.end());
+	this->_is_sorted = false;
+}
+
+void	Span::addNumber(int const& i)
+{
+	if(this->_numbers.size() + 1 > this->getMaxSize())
+		throw (Span::NotEnoughSpaceException());
+	this->_numbers.push_back(i);
+	this->_is_sorted = false;
+}
+
+void	Span::sort()
+{
+	if (!this->_is_sorted)
+	{
+		std::sort(this->_numbers.begin(), this->_numbers.end());
+		this->_is_sorted = true;
+	}
 }
 //-------------------------------------------------------------------------//
 
