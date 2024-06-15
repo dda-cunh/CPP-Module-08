@@ -1,13 +1,14 @@
+#include <algorithm>
+#include <cstdlib>
 #include <iterator>
-#include <cmath>
 #include <limits>
+#include <vector>
 
 #include "../inc/Span.hpp"
 
 //------------------------------  CANONICAL  ------------------------------//
 Span::Span(void)
-	:_shortest_span((unsigned int)std::numeric_limits<int>::max() + 1),
-	_max_size(0) 
+	:	_max_size(0) 
 {}
 
 Span::Span(Span const & src)
@@ -27,65 +28,54 @@ Span::~Span(void)
 
 //-----------------------------  CONSTRUCTORS  ----------------------------//
 Span::Span(unsigned int N)
-	: _numbers(std::multiset<int>()),
-	_shortest_span((unsigned int)std::numeric_limits<int>::max() + 1),
-	_max_size(N)
+	:	_numbers(std::vector<int>()),
+		_max_size(N)
 {}
 //-------------------------------------------------------------------------//
 
 //---------------------------  MEMBER FUNCTIONS  --------------------------//
 void	Span::addNumber(int const& i)
 {
-	std::multiset<int>::const_iterator	it;
-	unsigned int						lower_span;
-	unsigned int						upper_span;
-	bool								has_lower;
-	bool								has_upper;
-
 	if(this->_numbers.size() + 1 > this->getMaxSize())
 		throw (Span::NotEnoughSpaceException());
-	it = this->_numbers.insert(i);
-	if (this->_shortest_span == 0)
-		return ;
-	has_lower = (it != this->_numbers.begin());
-	it++;
-	has_upper = (it != this->_numbers.end());
-	if (has_upper)
-		upper_span = *it - i;
-	it--;
-	if (has_lower)
-	{
-		it--;
-		lower_span =  i - *it; 
-	}
-	if (has_upper && upper_span < this->_shortest_span)
-		this->_shortest_span = upper_span;
-	if (has_lower && lower_span < this->_shortest_span)
-		this->_shortest_span = lower_span;
+	this->_numbers.push_back(i);
 }
 
 void	Span::addIntVector(std::vector<int> const& arr)
 {
 	if(this->_numbers.size() + arr.size() > this->getMaxSize())
 		throw (Span::NotEnoughSpaceException());
-	for (unsigned long i = 0; i < arr.size(); i++)
-		this->addNumber(arr[i]);
+	std::copy(arr.begin(), arr.end(),
+				std::insert_iterator<std::vector<int> >(this->_numbers,
+				this->_numbers.begin()));
 }
 
-unsigned int	Span::shortestSpan()	const
+unsigned int	Span::shortestSpan()
 {
+	unsigned int		curr_span;
+	unsigned int		min_span;
+
 	if (this->_numbers.size() <= 1)
 		throw (CantGetSpanException());
-	return (this->_shortest_span);
+	min_span = (unsigned int)std::numeric_limits<int>::max() + 1;
+	std::sort(this->_numbers.begin(), this->_numbers.end());
+	for (unsigned long i = 1; i < this->_numbers.size(); i++)
+	{
+		curr_span = std::abs(this->_numbers[i] - this->_numbers[i]);
+		if (curr_span < min_span)
+			min_span = curr_span;
+	}
+	return (min_span);
 }
 
-unsigned int	Span::longestSpan() const
+unsigned int	Span::longestSpan()
 {
 	int	lower;
 	int	upper;
 
 	if (this->_numbers.size() <= 1)
 		throw (CantGetSpanException());
+	std::sort(this->_numbers.begin(), this->_numbers.end());
 	lower = *(this->_numbers.begin());
 	upper = *(this->_numbers.rbegin());
 	return (upper - lower);

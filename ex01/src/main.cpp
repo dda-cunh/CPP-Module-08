@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstdlib>
-#include <ctime>
 #include <vector>
+#include <ctime>
 
 #include "../inc/Span.hpp"
 
@@ -65,16 +65,27 @@ int main(void)
 			std::cout << sp.longestSpan() << std::endl;
 		});
 	TRY_CATCH_TEST("Adding array with 50000 random ints",
-			{
-				std::vector<int>	vec;
-				Span sp = Span(50000);
+		{
+			std::vector<int>	vec;
+			Span sp = Span(50000);
 
-				for (int i = 0; i < 50000; i++)
-					vec.push_back((std::rand() % rand_range) - rand_range / 2);
-				sp.addIntVector(vec);
-				std::cout << sp.shortestSpan() << std::endl;
-				std::cout << sp.longestSpan() << std::endl;
-			});
+			for (int i = 0; i < 50000; i++)
+				vec.push_back((std::rand() % rand_range) - rand_range / 2);
+			sp.addIntVector(vec);
+			std::cout << sp.shortestSpan() << std::endl;
+			std::cout << sp.longestSpan() << std::endl;
+		});
+	TRY_CATCH_TEST("Adding array with 1000000 random ints",
+		{
+			std::vector<int>	vec;
+			Span sp = Span(1000000);
+
+			for (int i = 0; i < 1000000; i++)
+				vec.push_back((std::rand() % rand_range) - rand_range / 2);
+			sp.addIntVector(vec);
+			std::cout << sp.shortestSpan() << std::endl;
+			std::cout << sp.longestSpan() << std::endl;
+		});
 	TRY_CATCH_TEST("Sequential set [0,1024[",
 		{
 			int const	size = 1024;

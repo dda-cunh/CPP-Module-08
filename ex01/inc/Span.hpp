@@ -1,7 +1,6 @@
 #pragma  once
 
 #include <vector>
-#include <set>
 
 #include "ExceptionMaker.hpp"
 
@@ -17,13 +16,12 @@ class Span
 
 		void				addNumber(int const&);
 		void				addIntVector(std::vector<int> const&);
-		unsigned int		shortestSpan()	const;
-		unsigned int		longestSpan()	const;
+		unsigned int		shortestSpan();
+		unsigned int		longestSpan();
 		unsigned int const&	getMaxSize()	const;
 
 	private:
-		std::multiset<int>	_numbers;
-		unsigned int		_shortest_span;
+		std::vector<int>	_numbers;
 		unsigned int		_max_size;
 
 		class NotEnoughSpaceException : public ExceptionMaker
