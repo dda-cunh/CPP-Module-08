@@ -14,6 +14,7 @@ class Span
 
 		Span(unsigned int);
 
+		void				sort();
 		void				addNumber(int const&);
 		void				addIntVector(std::vector<int> const&);
 		unsigned int		shortestSpan();
@@ -23,6 +24,7 @@ class Span
 	private:
 		std::vector<int>	_numbers;
 		unsigned int		_max_size;
+		bool				_is_sorted;
 
 		class NotEnoughSpaceException : public ExceptionMaker
 		{
